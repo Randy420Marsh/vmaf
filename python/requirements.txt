@@ -1,4 +1,11 @@
-numpy>=1.18.2,<2.0.0
+#for building
+cython
+numpy==1.26.4
+meson
+ninja
+
+#for testing
+numpy>=1.26.4
 scipy>=1.4.1
 matplotlib>=3.2.1
 pandas>=1.0.3

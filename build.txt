@@ -1,0 +1,28 @@
+#get the latest cpython build and altinstall, download and install uv and save a lifetime of your time
+
+#curl -LsSf https://astral.sh/uv/install.sh | sh
+
+#uv venv --python 3.14
+
+or
+
+python3.14 -m venv venv
+
+pip install -r requirements.txt
+
+CUDA_VERSION="13.0"
+CUDA_PATH="/usr/local/cuda-${CUDA_VERSION}"
+
+
+export PKG_CONFIG_PATH="/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig:/usr/local/lib/x86_64-linux-gnu/pkgconfig"
+export LIBRARY_PATH="/usr/local/lib:${CUDA_PATH}/lib64:${CUDA_PATH}/targets/x86_64-linux/lib"
+export CUDA_PATH="${CUDA_PATH}"
+export PATH="${CUDA_PATH}/bin:${PATH}"
+
+make -j$(nproc)
+
+./libvmaf/build/tools/vmaf --version
+
+pip install -r python/requirements.txt
+
+./unittest
