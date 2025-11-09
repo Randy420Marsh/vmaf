@@ -1,4 +1,5 @@
-FROM ubuntu:22.04
+FROM nvidia/cuda:13.0.2-cudnn-devel-ubuntu24.04
+
 ARG NV_CODEC_TAG="876af32a202d0de83bd1d36fe74ee0f7fcf86b0d"
 
 # get and install building tools
@@ -31,7 +32,10 @@ RUN wget https://github.com/FFmpeg/nv-codec-headers/archive/${NV_CODEC_TAG}.zip 
 RUN cd /vmaf && make clean && make ENABLE_NVCC=true && make install
 
 # install python tools
-RUN pip3 install --no-cache-dir -r /vmaf/python/requirements.txt
+RUN python3 -m venv /opt/vmaf-venv && \
+    /opt/vmaf-venv/bin/pip install --upgrade pip && \
+    /opt/vmaf-venv/bin/pip install --no-cache-dir -r /vmaf/python/requirements.txt
+ENV PATH="/opt/vmaf-venv/bin:$PATH"
 
 WORKDIR /vmaf
 
